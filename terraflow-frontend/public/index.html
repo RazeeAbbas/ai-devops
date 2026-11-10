@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terraflow Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="dashboard-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Terraflow home">
+          <span class="brand-mark">tf</span>
+          <span>terraflow</span>
+        </a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a class="active" href="/">Dashboard</a>
+          <a href="/schools.html">Schools / VMs</a>
+          <a href="/deploy.html">Deploy</a>
+          <a href="/jobs.html">Jobs</a>
+          <a href="/statefiles.html">Statefiles</a>
+        </nav>
+        <div class="status"><span class="status-dot"></span> local runner ready</div>
+      </header>
+
+      <section class="dashboard-hero">
+        <h1 class="dashboard-title">Terraflow Dashboard</h1>
+        <p class="dashboard-subtitle">
+          Deploy and manage your infrastructure with confidence. Trigger deployments, monitor jobs, and view Terraform files from one unified interface.
+        </p>
+        <div id="azure-status-pill" class="azure-status-pill" style="display: none;">
+          <span class="azure-dot"></span>
+          <span id="azure-status-text">Azure Connected</span>
+          <button id="azure-sync-btn" class="azure-sync-btn" title="Sync live data with Azure Portal runtime">↻ Sync Azure</button>
+        </div>
+      </section>
+
+      <!-- Top KPI Row -->
+      <section class="kpi-grid">
+        <div class="panel kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Total Deployments</span>
+          </div>
+          <div class="kpi-value" id="kpi-total">74</div>
+          <div class="kpi-subtext">All time deployments</div>
+        </div>
+
+        <div class="panel kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-icon success-icon" aria-hidden="true">✓</span>
+            <span class="kpi-label">Successful</span>
+          </div>
+          <div class="kpi-value success-color" id="kpi-success">52</div>
+          <div class="kpi-subtext success-color" id="kpi-success-rate">70.3% success rate</div>
+        </div>
+
+        <div class="panel kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-icon failed-icon" aria-hidden="true">!</span>
+            <span class="kpi-label">Failed</span>
+          </div>
+          <div class="kpi-value failed-color" id="kpi-failed">18</div>
+          <div class="kpi-subtext failed-color" id="kpi-failure-rate">24.3% failure rate</div>
+        </div>
+
+        <div class="panel kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-icon running-icon" aria-hidden="true">📈</span>
+            <span class="kpi-label">Running</span>
+          </div>
+          <div class="kpi-value running-color" id="kpi-running">4</div>
+          <div class="kpi-subtext running-color">Currently in progress</div>
+        </div>
+      </section>
+
+      <!-- Charts Row -->
+      <section class="charts-grid">
+        <div class="panel chart-panel">
+          <div class="chart-header">
+            <h2>Deployments by Type</h2>
+            <p>Distribution of deployment types</p>
+          </div>
+          <div id="bar-chart-container" class="chart-wrapper">
+            <!-- Rendered by dashboard.js -->
+          </div>
+        </div>
+
+        <div class="panel chart-panel">
+          <div class="chart-header">
+            <h2>Job Status Distribution</h2>
+            <p>Current state of all deployments</p>
+          </div>
+          <div id="pie-chart-container" class="chart-wrapper">
+            <!-- Rendered by dashboard.js -->
+          </div>
+        </div>
+      </section>
+
+      <div id="action-feedback" class="action-feedback" style="display: none;" role="status"></div>
+
+      <!-- Cost Estimation & Redeployment Row -->
+      <section class="infra-grid">
+        <div class="panel cost-panel">
+          <div class="section-header">
+            <div>
+              <p class="panel-kicker">Cloud Spend</p>
+              <h2>Cost Estimation</h2>
+              <p class="section-desc">Estimated monthly spend across Azure compute, 127 GB SSD, and static public IP.</p>
+            </div>
+            <div class="total-cost-badge">
+              <span>Total Estimated</span>
+              <strong id="kpi-total-cost">$110.96/mo</strong>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="cost-table">
+              <thead>
+                <tr>
+                  <th>Workspace</th>
+                  <th>State</th>
+                  <th>SKU</th>
+                  <th>Compute</th>
+                  <th>Storage</th>
+                  <th>IP</th>
+                  <th>Monthly Total</th>
+                </tr>
+              </thead>
+              <tbody id="cost-table-body">
+                <tr><td colspan="7" class="empty-cell">Loading cost estimates...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel redeploy-panel">
+          <div class="section-header">
+            <div>
+              <p class="panel-kicker">Self-Service</p>
+              <h2>Redeployment Hub</h2>
+              <p class="section-desc">Trigger instant dry-run redeployments for provisioned workspaces.</p>
+            </div>
+            <a href="/deploy.html" class="primary-button new-deploy-btn">
+              <span>+ New</span>
+            </a>
+          </div>
+
+          <div id="redeploy-list" class="redeploy-list">
+            <div class="empty-notice">Loading redeployment targets...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/dashboard.js"></script>
+  </body>
+</html>

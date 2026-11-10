@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terraflow Jobs</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="jobs-shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark">tf</span><span>terraflow</span></a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="/">Dashboard</a>
+          <a href="/schools.html">Schools / VMs</a>
+          <a href="/deploy.html">Deploy</a>
+          <a class="active" href="/jobs.html">Jobs</a>
+          <a href="/statefiles.html">Statefiles</a>
+        </nav>
+        <div class="status"><span class="status-dot"></span> local runner ready</div>
+      </header>
+      <section class="jobs-header"><div><p class="eyebrow">Terraform activity</p><h1>Job status</h1></div><p>Every plan is attached to the workspace named after its resource group.</p></section>
+      <section id="jobs" aria-live="polite"><div class="panel empty-jobs">Loading jobs...</div></section>
+    </main>
+    <script type="module" src="/jobs.js"></script>
+  </body>
+</html>

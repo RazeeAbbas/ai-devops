@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terraflow Statefiles</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="jobs-shell">
+      <header class="topbar">
+        <a class="brand" href="/"><span class="brand-mark">tf</span><span>terraflow</span></a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="/">Dashboard</a>
+          <a href="/schools.html">Schools / VMs</a>
+          <a href="/deploy.html">Deploy</a>
+          <a href="/jobs.html">Jobs</a>
+          <a class="active" href="/statefiles.html">Statefiles</a>
+        </nav>
+        <div class="status"><span class="status-dot"></span> local runner ready</div>
+      </header>
+      <section class="jobs-header"><div><p class="eyebrow">Workspace storage</p><h1>Statefiles</h1></div><p>Browse state metadata by workspace. File contents remain protected on the backend machine.</p></section>
+      <section id="statefiles" aria-live="polite"><div class="panel empty-jobs">Loading statefiles...</div></section>
+    </main>
+    <script type="module" src="/statefiles.js"></script>
+  </body>
+</html>

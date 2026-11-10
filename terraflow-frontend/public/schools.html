@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tenant Virtual Machines - Terraflow</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="schools-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Terraflow home">
+          <span class="brand-mark">tf</span>
+          <span>terraflow</span>
+        </a>
+        <nav class="main-nav" aria-label="Primary navigation">
+          <a href="/">Dashboard</a>
+          <a class="active" href="/schools.html">Schools / VMs</a>
+          <a href="/deploy.html">Deploy</a>
+          <a href="/jobs.html">Jobs</a>
+          <a href="/statefiles.html">Statefiles</a>
+        </nav>
+        <div class="status"><span class="status-dot"></span> local runner ready</div>
+      </header>
+
+      <!-- Tenant Switcher Bar -->
+      <section class="tenant-switcher-section">
+        <div class="tenant-tabs" id="tenant-tabs">
+          <!-- Dynamically populated by schools.js -->
+        </div>
+        <button id="add-tenant-btn" class="secondary-btn small-btn">+ Add School / Tenant</button>
+      </section>
+
+      <!-- Tenant Details Table matching Mockup 1 -->
+      <section class="panel tenant-meta-panel">
+        <table class="tenant-details-table">
+          <tbody>
+            <tr>
+              <th scope="row">ID</th>
+              <td id="tenant-id">0010J00001yRZWIQA4</td>
+            </tr>
+            <tr>
+              <th scope="row">Name</th>
+              <td id="tenant-name">Chetwynde School</td>
+            </tr>
+            <tr>
+              <th scope="row">Edu #</th>
+              <td id="tenant-edu">Acc-50600</td>
+            </tr>
+            <tr>
+              <th scope="row">Resource Group</th>
+              <td id="tenant-rg" class="mono-text">HS-CHETWYNDE-SCHOOL</td>
+            </tr>
+            <tr>
+              <th scope="row">Database Server</th>
+              <td id="tenant-db" class="mono-text">crbc-hs-prod-uk1.database.windows.net</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Virtual Machines Section -->
+      <section class="vms-section">
+        <div class="vms-header">
+          <h2>Virtual Machines</h2>
+          <button id="add-vm-btn" class="primary-button add-vm-btn">Add Virtual Machine</button>
+        </div>
+
+        <!-- VM Cards Grid -->
+        <div id="vm-cards-grid" class="vm-cards-grid">
+          <!-- Cards rendered by schools.js -->
+        </div>
+      </section>
+
+      <!-- Modal: Request Login Access matching Mockup 2 -->
+      <div id="access-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-vm-title">
+        <div class="modal-card access-modal-card">
+          <div class="modal-header">
+            <div>
+              <h2 id="modal-vm-title">hs-50600-vm1</h2>
+              <p class="modal-subtitle">Request login access</p>
+            </div>
+            <button id="close-access-modal" class="close-btn" aria-label="Close modal">&times;</button>
+          </div>
+
+          <form id="access-request-form">
+            <div class="form-row two-cols">
+              <label class="field">
+                <span>Login</span>
+                <div class="input-with-icon">
+                  <input name="login" value="psuser" required />
+                  <span class="field-icon" aria-hidden="true">🔑</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span>Your IP Address</span>
+                <input name="ipAddress" id="client-ip-input" value="117.20.23.90" required />
+                <small class="helper-text">
+                  Visit <a href="https://whatsmyip.org" target="_blank" rel="noopener">https://whatsmyip.org</a> to obtain your public IP address.
+                </small>
+              </label>
+            </div>
+
+            <div class="form-row two-cols">
+              <label class="field">
+                <span>Reason for access</span>
+                <select name="reason">
+                  <option value="Case">Case</option>
+                  <option value="Opportunity">Opportunity</option>
+                  <option value="Training">Training</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Case/Opp #</span>
+                <input name="caseNumber" placeholder="e.g. CAS-90214-X8" />
+                <small class="helper-text">If support case or sales opportunity, please list the relevant ID here.</small>
+              </label>
+            </div>
+
+            <div class="form-row full-width">
+              <label class="field">
+                <span>Notes / Justification</span>
+                <textarea name="notes" rows="4" placeholder="Describe the maintenance or inspection required..."></textarea>
+              </label>
+            </div>
+
+            <div class="form-actions-bar">
+              <button type="submit" class="primary-button request-submit-btn" id="submit-access-btn">
+                Request access
+              </button>
+            </div>
+
+            <div class="info-callout" role="note">
+              It may take a little while for your request to be processed. Please do not close the browser during this time.
+            </div>
+          </form>
+
+          <!-- Result banner when access is granted -->
+          <div id="access-result" class="access-result-panel" style="display: none;">
+            <div class="access-granted-header">
+              <span class="granted-icon">✓</span>
+              <div>
+                <h3>Access Granted (JIT Enabled)</h3>
+                <p>An NSG inbound RDP rule has been approved for your client IP.</p>
+              </div>
+            </div>
+
+            <div class="credentials-box">
+              <div class="cred-row"><span>Host / IP:</span><strong id="cred-host">20.49.176.149:3389</strong></div>
+              <div class="cred-row"><span>Username:</span><strong id="cred-user">psuser</strong></div>
+              <div class="cred-row"><span>Session Password:</span><code id="cred-pass">P@ss-8a19f!2026</code></div>
+              <div class="cred-row"><span>Access Expiration:</span><span id="cred-expiry" class="expiry-time">In 4 hours</span></div>
+            </div>
+
+            <div class="access-actions">
+              <a id="rdp-download-link" href="#" class="primary-button download-rdp-btn">
+                <span>Download .RDP File</span>
+                <span class="btn-arrow">↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal: Add Virtual Machine -->
+      <div id="add-vm-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div>
+              <h2>Add Virtual Machine</h2>
+              <p class="modal-subtitle">Provision or associate a VM with <span id="add-vm-tenant-name">Chetwynde School</span></p>
+            </div>
+            <button id="close-vm-modal" class="close-btn">&times;</button>
+          </div>
+          <form id="add-vm-form">
+            <label class="field">
+              <span>VM Name</span>
+              <input name="vmName" placeholder="e.g. ahmadschool-vm2" required />
+            </label>
+            <label class="field">
+              <span>Public IP</span>
+              <input name="vmIp" placeholder="e.g. 20.49.176.155 (or auto-assigned)" />
+            </label>
+            <label class="field">
+              <span>VM Size / SKU</span>
+              <select name="vmSize">
+                <option value="Standard_B2als_v2">Standard_B2als_v2 (Recommended)</option>
+                <option value="Standard_B1s">Standard_B1s</option>
+                <option value="Standard_B2s">Standard_B2s</option>
+                <option value="Standard_B2ms">Standard_B2ms</option>
+              </select>
+            </label>
+            <div class="form-actions-bar">
+              <button type="submit" class="primary-button">Create VM</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal: Add New Tenant -->
+      <div id="add-tenant-modal" class="modal-backdrop" style="display: none;" role="dialog" aria-modal="true">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div>
+              <h2>Add School / Tenant</h2>
+              <p class="modal-subtitle">Register a new customer or organization environment</p>
+            </div>
+            <button id="close-tenant-modal" class="close-btn">&times;</button>
+          </div>
+          <form id="add-tenant-form">
+            <label class="field">
+              <span>School / Tenant Name</span>
+              <input name="tenantName" placeholder="e.g. Ahmad School" required />
+            </label>
+            <label class="field">
+              <span>Resource Group</span>
+              <input name="tenantRg" placeholder="e.g. HS-AHMAD-SCHOOL" required />
+            </label>
+            <label class="field">
+              <span>Edu # (Account Code)</span>
+              <input name="tenantEdu" placeholder="e.g. Acc-45000" />
+            </label>
+            <label class="field">
+              <span>Database Server</span>
+              <input name="tenantDb" value="crbc-hs-prod-uk1.database.windows.net" />
+            </label>
+            <div class="form-actions-bar">
+              <button type="submit" class="primary-button">Save Tenant</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="/schools.js"></script>
+  </body>
+</html>
+
